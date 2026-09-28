@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Poker Study Duo — AI Decision Trainer</title>
+<style>
+:root{--bg:#07140f;--panel:#0d2119;--panel2:#102a20;--line:#244438;--text:#eef8f3;--muted:#a9c0b6;--accent:#7de0a8;--good:#72e2a0;--warn:#ffd166;--bad:#ff8f8f}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(160deg,#06110d,#0a1b14 55%,#06100c);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.wrap{max-width:980px;margin:auto;padding:18px}
+header{display:flex;gap:12px;align-items:flex-start;justify-content:space-between;margin-bottom:14px}
+h1{font-size:22px;margin:0 0 5px}.sub{color:var(--muted);font-size:13px}
+.badges{display:flex;gap:7px;flex-wrap:wrap}.badge{border:1px solid var(--line);background:#0b1b15;padding:7px 9px;border-radius:999px;font-size:12px}
+.layout{display:grid;grid-template-columns:1.25fr .75fr;gap:14px}
+.card{background:rgba(13,33,25,.94);border:1px solid var(--line);border-radius:18px;padding:15px}
+.table{background:radial-gradient(circle at 50% 48%,#174d35,#0d3525 58%,#09261b);border:1px solid #285642;border-radius:22px;min-height:390px;padding:16px;position:relative;overflow:hidden}
+.table:after{content:"";position:absolute;inset:18%;border:1px solid rgba(255,255,255,.07);border-radius:50%}
+.seats{position:relative;z-index:1;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;align-items:center;min-height:215px}
+.seat{background:rgba(5,18,13,.72);border:1px solid rgba(255,255,255,.13);border-radius:14px;padding:9px;text-align:center;min-width:0}
+.seat.you{border-color:var(--accent);box-shadow:0 0 0 1px rgba(125,224,168,.12)}
+.name{font-weight:700;font-size:13px}.role{font-size:11px;color:var(--muted);margin-top:2px}
+.miniCards{display:flex;justify-content:center;gap:5px;margin-top:7px}.mini{width:31px;height:43px;border-radius:6px;background:#f7faf8;color:#101714;display:grid;place-items:center;font-weight:800;font-size:12px}.back{background:repeating-linear-gradient(45deg,#173f31,#173f31 5px,#245541 5px,#245541 10px);color:transparent;border:1px solid #396b58}
+.center{position:absolute;z-index:2;left:50%;top:55%;transform:translate(-50%,-50%);text-align:center}.board{display:flex;justify-content:center;gap:6px;margin-bottom:7px}.board .mini{width:37px;height:51px}.status{font-size:12px;color:#d6ebe1}
+.controls{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+button{min-height:46px;border-radius:12px;border:1px solid #315c4b;background:#112a20;color:var(--text);font-weight:800;cursor:pointer}
+button:hover{background:#17382a}button:disabled{opacity:.45;cursor:not-allowed}.primary{border-color:#58bd87;background:#174f36}.secondary{background:#101d18}
+.feedback{margin-top:12px;border-radius:14px;padding:12px;border:1px solid var(--line);background:#0b1b15}.feedback.good{border-color:#397b59}.feedback.warn{border-color:#806d35}.feedback.bad{border-color:#7d4545}
+.feedback b{display:block;margin-bottom:4px}.tiny{font-size:12px;color:var(--muted);line-height:1.45}
+.progress{height:8px;background:#07120e;border-radius:99px;overflow:hidden;margin-top:7px}.bar{height:100%;background:var(--accent);width:0;transition:width .3s}
+.lesson{display:grid;gap:10px}.metric{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid var(--line);padding:8px 0;font-size:13px}.metric:last-child{border-bottom:0}
+.aiLog{max-height:180px;overflow:auto;display:grid;gap:7px}.log{font-size:12px;color:#d4e6df;background:#0a1914;border:1px solid #18382c;border-radius:10px;padding:8px}
+.note{font-size:11px;color:var(--muted);margin-top:10px}
+@media(max-width:760px){.layout{grid-template-columns:1fr}.seats{grid-template-columns:repeat(2,1fr)}.seat:last-child{grid-column:1/-1;max-width:48%;justify-self:center}.controls{grid-template-columns:1fr}.table{min-height:520px}.center{top:57%}}
+</style>
+</head>
+<body>
+<div class="wrap" id="app">
+<header>
+<div><h1>Poker Study Duo</h1><div class="sub">5명의 AI 상대와 진행하는 교육용 의사결정 훈련</div></div>
+<div class="badges"><span class="badge" id="level">Lv. 1</span><span class="badge" id="xp">XP 0</span><span class="badge" id="acc">정확도 0%</span></div>
+</header>
+
+<div class="layout">
+<main>
+<section class="card">
+<div class="table" aria-label="교육용 카드 테이블">
+<div class="seats" id="seats"></div>
+<div class="center">
+<div class="board" id="board"></div>
+<div class="status" id="status">문제를 불러오는 중…</div>
+</div>
+</div>
+<div class="card" style="margin-top:12px;padding:12px;background:#0b1b15">
+<div style="display:flex;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap">
+<strong>학습용 의사결정</strong>
+<span class="badge" id="tokens">학습 토큰 100</span>
+</div>
+<div class="tiny" style="margin-top:5px">아래 토큰은 실제 돈이나 현금 가치가 없는 학습 점수입니다.</div>
+</div>
+<div class="controls">
+<button class="primary" data-choice="check">체크</button>
+<button data-choice="call">콜</button>
+<button class="secondary" data-choice="raise">레이즈</button>
+</div>
+<div id="feedback" class="feedback" aria-live="polite"><b>실시간 코치</b><span>카드를 보고 가장 근거가 있는 선택을 해보세요. 베팅·금전 요소는 없습니다.</span></div>
+</section>
+</main>
+
+<aside class="lesson">
+<section class="card">
+<strong>이번 판단의 근거</strong>
+<div class="metric"><span>내 패의 상대적 강도</span><b id="strength">—</b></div>
+<div class="metric"><span>포지션</span><b id="position">—</b></div>
+<div class="metric"><span>공개 정보</span><b id="info">—</b></div>
+<div class="metric"><span>AI 성향</span><b id="tendency">—</b></div>
+<div class="tiny" id="hint">힌트: 강한 패만 보는 것이 아니라 포지션과 공개 정보를 함께 보세요.</div>
+</section>
+<section class="card">
+<strong>학습 진행</strong>
+<div class="metric"><span>문제</span><b id="round">1 / 10</b></div>
+<div class="metric"><span>연속 정답</span><b id="streak">0</b></div>
+<div class="progress"><div class="bar" id="bar"></div></div>
+</section>
+<section class="card">
+<strong>AI 행동 로그</strong>
+<div class="aiLog" id="log"></div>
+<div class="note">이 화면은 카드 개념 학습용 시뮬레이션입니다. 학습 토큰은 실제 가치가 없으며 게임·금전 거래와 연결되지 않습니다.</div>
+</section>
+</aside>
+</div>
+</div>
+
+<script>
+(() => {
+const root=document.getElementById('app');
+const $=s=>root.querySelector(s);
+const names=['Nova','Milo','Iris','Kai','Rin'];
+const positions=['UTG','HJ','CO','BTN','BB'];
+const decks=['A♠','K♠','Q♥','J♥','10♣','9♣','8♦','7♦','6♠','5♥','4♣','3♦','2♠'];
+const scenarios=[
+ {hole:['A♠','K♠'],board:['Q♠','7♦','2♣'],pos:'BTN',strength:'매우 강함',info:'상위 카드 + 백도어 가능성',tendency:'보수형',best:'raise',why:'강한 상위 카드와 좋은 위치를 함께 고려해 주도적인 선택을 연습할 수 있습니다.'},
+ {hole:['7♣','7♦'],board:['K♠','9♥','3♣'],pos:'HJ',strength:'중간 이상',info:'원페어 가능성',tendency:'공격형',best:'check',why:'원페어이지만 높은 카드가 공개되어 있어 무조건 압박하기보다 상황을 보수적으로 평가하는 연습이 적절합니다.'},
+ {hole:['2♣','7♥'],board:['A♦','K♣','10♠'],pos:'UTG',strength:'낮음',info:'연결성 낮음',tendency:'공격형',best:'check',why:'현재 공개 카드와 내 패의 연결성이 낮습니다. 약한 근거로 공격성을 높이지 않는 것이 핵심입니다.'},
+ {hole:['Q♣','J♣'],board:['10♣','9♦','2♠'],pos:'CO',strength:'강한 드로우 가능',info:'연속성 높음',tendency:'중립',best:'call',why:'연속된 카드와 높은 카드가 함께 있어 개선 가능성이 있습니다. 공개 정보를 더 관찰하는 선택을 연습합니다.'},
+ {hole:['A♥','4♥'],board:['A♣','8♦','3♠'],pos:'BB',strength:'원페어',info:'탑 페어',tendency:'보수형',best:'call',why:'탑 페어는 의미 있는 강점이지만 모든 상황에서 최강은 아닙니다. 상대 행동과 위치를 함께 고려하세요.'},
+ {hole:['5♠','5♣'],board:['A♥','K♦','Q♣'],pos:'UTG',strength:'낮음~중간',info:'낮은 페어',tendency:'공격형',best:'check',why:'낮은 페어는 높은 공개 카드가 많은 상황에서 취약해질 수 있습니다. 과신하지 않는 것이 포인트입니다.'},
+ {hole:['10♥','9♥'],board:['J♥','8♣','2♦'],pos:'BTN',strength:'개선 가능성 높음',info:'연결성 + 플러시 가능성',tendency:'중립',best:'call',why:'연결성과 같은 무늬가 일부 있어 개선 가능성을 생각할 수 있습니다. 포지션도 함께 확인하세요.'},
+ {hole:['K♦','4♣'],board:['K♣','7♠','2♥'],pos:'HJ',strength:'탑 페어',info:'킥커 고려 필요',tendency:'보수형',best:'call',why:'탑 페어지만 보조 카드의 질을 함께 평가해야 합니다. 단순히 한 장 맞았다는 이유만으로 판단하지 마세요.'},
+ {hole:['3♥','2♥'],board:['A♠','K♠','Q♦'],pos:'CO',strength:'낮음',info:'연결성 낮음',tendency:'보수형',best:'check',why:'현재 정보만으로는 강한 근거가 부족합니다. 포지션이 좋아도 패 자체의 연결성을 무시하면 안 됩니다.'},
+ {hole:['J♠','10♠'],board:['J♦','10♣','4♥'],pos:'BTN',strength:'두 쌍',info:'강한 현재 조합',tendency:'공격형',best:'raise',why:'현재 조합이 강하므로 상대의 약한 범위를 압박하는 개념을 학습할 수 있는 장면입니다.'}
+];
+let state={i:0,xp:0,correct:0,streak:0,answered:false,tokens:100};
+
+function renderSeats(){
+ $('#seats').innerHTML=names.map((n,i)=>`<div class="seat ${i===2?'you':''}">
+<div class="name">${i===2?'나':n}</div><div class="role">${i===2?'CO':positions[i]}</div>
+<div class="miniCards">${i===2?'<span class="mini">'+scenarios[state.i].hole[0]+'</span><span class="mini">'+scenarios[state.i].hole[1]+'</span>':'<span class="mini back">?</span><span class="mini back">?</span>'}</div></div>`).join('');
+}
+function choiceLabel(choice){
+ return {check:'체크',call:'콜',raise:'레이즈'}[choice]||choice;
+}
+function render(){
+ const s=scenarios[state.i];
+ renderSeats();
+ $('#board').innerHTML=s.board.map(c=>`<span class="mini">${c}</span>`).join('');
+ $('#status').textContent=`장면 ${state.i+1}: ${s.pos}에서 판단하세요`;
+ $('#strength').textContent=s.strength;$('#position').textContent=s.pos;$('#info').textContent=s.info;$('#tendency').textContent=s.tendency;
+ $('#round').textContent=`${state.i+1} / ${scenarios.length}`;$('#streak').textContent=state.streak;
+ $('#bar').style.width=`${state.i/scenarios.length*100}%`;
+ $('#level').textContent=`Lv. ${Math.floor(state.xp/100)+1}`;$('#tokens').textContent=`학습 토큰 ${state.tokens}`;$('#xp').textContent=`XP ${state.xp}`;
+ $('#acc').textContent=`정확도 ${state.i?Math.round(state.correct/state.i*100):0}%`;
+ $('#log').innerHTML=names.map((n,j)=>`<div class="log"><b>${n}</b> · ${j%2?'상황 관찰':'정보 수집'}<br><span class="tiny">행동은 학습용으로 추상화되어 있습니다.</span></div>`).join('');
+ document.querySelectorAll('[data-choice]').forEach(b=>b.disabled=state.answered);
+}
+function answer(choice){
+ if(state.answered)return;
+ state.answered=true;
+ const s=scenarios[state.i],ok=choice===s.best;
+ const cost={check:0,call:5,raise:10}[choice]||0;
+ state.tokens=Math.max(0,state.tokens-cost);
+ if(ok){state.correct++;state.streak++;state.xp+=25}
+ else {state.streak=0;state.xp+=5}
+ const f=$('#feedback');f.className='feedback '+(ok?'good':choice==='raise'?'bad':'warn');
+ f.innerHTML=`<b>${ok?'좋은 판단':'다시 생각해볼 장면'}</b>
+ <span>${s.why}</span>
+ <div class="tiny" style="margin-top:7px">
+ 선택: <b>${choiceLabel(choice)}</b> · 학습 토큰 ${cost} 사용<br>
+ 핵심: 패의 강도 → 포지션 → 공개 정보 → 상대 성향 순서로 확인하세요.
+ </div>`;
+ setTimeout(()=>{
+   state.i=(state.i+1)%scenarios.length;
+   state.answered=false;
+   $('#feedback').className='feedback';
+   $('#feedback').innerHTML='<b>실시간 코치</b><span>다음 장면에서는 공개 정보가 어떻게 판단을 바꾸는지 확인해보세요.</span>';
+   render()
+ },1500);
+}
+document.querySelectorAll('[data-choice]').forEach(b=>b.addEventListener('click',()=>answer(b.dataset.choice)));
+render();
+})();
+</script>
+</body>
+</html>
