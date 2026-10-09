@@ -41,26 +41,66 @@
 .adaptive-stat{border:1px solid var(--line);border-radius:10px;padding:8px 10px;font-size:12px;background:#fff}
 @media(max-width:650px){.adaptive-options{grid-template-columns:1fr}.adaptive-panel{padding:12px}}
 
+
+/* V15: 두 가지 시작 경로 및 초보자 학습 카드 */
+.onboarding{z-index:100}.test-actions{position:sticky;bottom:-24px;background:#fff;z-index:5;padding:13px 0;align-items:center}.test-actions .small{line-height:1.5}.onboard-card{width:min(780px,100%)}.onboard-tag{font-size:11px;font-weight:900;color:var(--green2);letter-spacing:.07em;margin-bottom:6px}
+.path-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:22px}.path-card{border:1px solid var(--line);background:#fff;border-radius:17px;padding:20px;text-align:left;cursor:pointer;color:var(--ink);line-height:1.55;transition:border-color .15s,transform .15s}.path-card:hover,.path-card:focus-visible{border-color:var(--green);transform:translateY(-1px)}.path-card strong{font-size:20px;display:block;margin-bottom:8px}.path-card span{font-size:13px;color:var(--muted);display:block}.path-card em{font-style:normal;font-weight:800;color:var(--green2);display:block;margin-top:14px}
+.onboard-back{border:0;background:none;color:var(--green2);font-weight:800;padding:6px 0 12px;cursor:pointer}
+.guide-progress{display:flex;gap:5px;margin:15px 0}.guide-progress span{height:8px;flex:1;border-radius:999px;background:#e9e8df}.guide-progress span.done{background:var(--green)}.guide-progress span.current{background:#e7b849}
+.guide-step{padding:12px 14px;border-radius:12px;background:#f2f7f2;color:#225737;font-size:13px;font-weight:700;margin:12px 0}
+.guide-body{margin:12px 0 15px;line-height:1.75;white-space:pre-line}.guide-question{margin:14px 0 10px;font-size:17px;line-height:1.55}
+.guide-options{display:grid;gap:9px}.guide-answer{background:white;border:1px solid var(--line);border-radius:12px;padding:13px;text-align:left;cursor:pointer;font-size:14px;color:var(--ink)}.guide-answer:hover{border-color:var(--green)}.guide-answer.selected{border-color:var(--green);background:#eaf7ee}.guide-answer.incorrect{border-color:#d79f70;background:#fff3e7}.guide-answer:disabled{cursor:default}
+.guide-tools{display:flex;gap:9px;flex-wrap:wrap;margin:13px 0}.guide-tools button{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-weight:800;color:var(--green2);cursor:pointer}.guide-detail{background:#f7f5ee;border-radius:12px;padding:12px 14px;font-size:13px;line-height:1.65;margin:9px 0}.guide-feedback{padding:13px;background:#edf7ef;border-radius:12px;line-height:1.6;margin-top:14px}.guide-feedback.retry{background:#fff3e7}.guide-footer{display:flex;gap:12px;justify-content:space-between;align-items:center;margin-top:16px}.guide-footer .primary-btn:disabled{opacity:.45;cursor:not-allowed}.guide-link{border:0;background:none;color:var(--green2);cursor:pointer;font-weight:800}
+.practice-banner.hidden{display:none}.practice-banner{padding:12px 15px;border:1px solid #b9dac2;border-radius:16px;background:#eaf7ee;display:flex;justify-content:space-between;align-items:center;gap:10px}.practice-banner b{display:block}.practice-banner span{font-size:12px;color:#37654b}.practice-banner button{border:0;background:var(--green);color:white;font-weight:800;border-radius:10px;padding:10px 14px;cursor:pointer;white-space:nowrap}.practice-banner button:disabled{opacity:.5;cursor:not-allowed}
+.adaptive-help{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.adaptive-help button{border:1px solid var(--line);background:#fff;border-radius:10px;color:var(--green2);padding:9px 12px;cursor:pointer;font-weight:800}.adaptive-note{background:#f7f5ee;border-radius:11px;padding:12px;line-height:1.65;font-size:13px;margin-top:10px}
+@media(max-width:650px){.onboard-card{padding:17px}.onboard-head h1{font-size:22px}.path-grid{grid-template-columns:1fr}.path-card{padding:14px}.path-card strong{font-size:17px}.practice-banner{flex-direction:column;align-items:stretch}.practice-banner button{width:100%}}
 </style>
 </head>
 <body>
 
-<div class="onboarding hidden" id="onboarding">
+<div class="onboarding hidden" id="onboarding" role="dialog" aria-modal="true" aria-label="포커 학습 시작하기">
   <div class="onboard-card">
-    <div class="onboard-head"><h1>포커 레벨 테스트</h1><p>먼저 간단한 문제로 기본 지식을 확인합니다. 그 다음 실제 가상칩 포커 세션을 플레이하고, 두 결과를 합쳐 현재 학습 레벨과 다음 코스를 정합니다.</p></div>
-    <div class="test-progress"><span id="testProgress"></span></div>
-    <form id="levelTest"></form>
-    <div class="test-actions"><span class="small" id="testHint">모든 문제에 답해주세요.</span><button class="primary-btn" type="submit" form="levelTest">테스트 완료</button></div>
+    <div id="pathChooser">
+      <div class="onboard-tag">POKER DUO · 시작하기</div>
+      <div class="onboard-head"><h1>나에게 맞는 포커 공부를 시작해요</h1><p>포커를 처음 접해도 괜찮아요. 현재 알고 있는 내용에 맞춰 출발하면 돼요.</p></div>
+      <div class="path-grid">
+        <button class="path-card" type="button" id="startBeginner"><strong>기초부터 배우기</strong><span>카드와 용어를 알아보고, 게임 규칙을 배운 다음 AI와 연습해요.</span><em>완전 초보자 추천 →</em></button>
+        <button class="path-card" type="button" id="startPlacement"><strong>레벨 테스트 시작</strong><span>기본 규칙을 이미 안다면 5문제로 이해도를 확인하고 AI 연습을 시작해요.</span><em>기본 규칙을 알고 있어요 →</em></button>
+      </div>
+      <p class="small" style="margin-top:17px">이 앱은 실제 돈이 아닌 가상 칩만 사용하는 학습용 시뮬레이터예요.</p>
+    </div>
+    <div id="placementView" class="hidden">
+      <button class="onboard-back" id="backToChoices" type="button">← 시작 방법 다시 선택하기</button>
+      <div class="onboard-head"><h1>포커 레벨 테스트</h1><p>용어가 낯설면 아래 설명을 확인하세요. 답을 모두 선택하면 AI 연습 게임으로 이어져요.</p></div>
+      <button class="guide-link" id="toggleTestGlossary" type="button" aria-expanded="false" style="margin-top:14px">용어 설명 보기 ▾</button>
+      <div class="guide-detail hidden" id="testGlossary">프리플랍: 공용 카드가 공개되기 전 단계 · 플랍: 공용 카드 3장이 처음 공개되는 단계 · 버튼(BTN): 플랍 이후 대체로 가장 늦게 행동하는 자리 · 보드: 모두가 함께 사용할 수 있는 공용 카드 · 팟: 이번 판에 모인 칩 · 콜: 상대의 베팅 금액에 맞춰 필요한 칩 내기 · 레이즈: 베팅 금액 높이기 · 플러시: 같은 무늬 카드 5장으로 만드는 족보 · 팟 오즈: 필요한 콜 비용과 콜 후 전체 팟의 비율</div>
+      <div class="test-progress"><span id="testProgress"></span></div>
+      <form id="levelTest"><div id="testQuestionList"></div><div class="test-actions"><span class="small" id="testHint">모든 문제에 답하면 다음 단계로 넘어갈 수 있어요.</span><button class="primary-btn" type="submit">테스트 완료</button></div></form>
+    </div>
+    <div id="beginnerView" class="hidden">
+      <button class="onboard-back" id="beginnerChoose" type="button">← 시작 방법 다시 선택하기</button>
+      <div class="onboard-tag">기초 학습 코스 · 6단계</div>
+      <div class="onboard-head"><h1 id="beginnerTitle">포커 기초 학습</h1><p id="beginnerSubtitle">기본 용어부터 하나씩 연습해요.</p></div>
+      <div class="guide-progress" id="beginnerProgress" aria-label="기초 학습 진행률"></div>
+      <div class="guide-step" id="beginnerLabel"></div>
+      <div class="guide-body" id="beginnerBody"></div>
+      <div id="beginnerQuestionBlock"><div class="guide-question" id="beginnerQuestion"></div><div class="guide-options" id="beginnerAnswers"></div></div>
+      <div class="guide-tools" id="beginnerTools"><button id="beginnerHint" type="button">힌트 보기</button><button id="beginnerConcept" type="button">개념 다시 보기</button></div>
+      <div class="guide-detail hidden" id="beginnerHelp" aria-live="polite"></div>
+      <div class="guide-feedback hidden" id="beginnerFeedback" aria-live="polite"></div>
+      <div class="guide-footer"><span class="small" id="beginnerStatus">모든 학습은 가상 칩으로 진행돼요.</span><button class="primary-btn" id="beginnerContinue" type="button" disabled>다음 단계</button></div>
+    </div>
   </div>
 </div>
 <div class="app">
 <aside class="side">
   <div class="brand">Poker Duo</div><div class="sub">AI 5명과 연습하는 텍사스 홀덤 학습 시뮬레이터</div>
   <div class="level"><div class="level-title" id="levelTitle">레벨 1 · 시작</div><div class="small" id="xpText">0 / 100 XP</div><div class="xp-track"><div class="xp-fill" id="xpBar"></div></div></div>
-  <div class="nav"><button class="active">플레이 & 코칭</button><button>학습 패스</button><button>약점 분석</button></div>
-  <div class="note small">가상 칩만 사용합니다. 코칭의 확률 수치는 학습용 추정치이며 솔버 결과가 아닙니다.</div>
+  <div class="nav"><button class="active">플레이 & 코칭</button><button>학습 코스</button><button>약점 분석</button><button id="openBeginner" type="button">기초 용어 복습</button></div>
+  <div class="note small">가상 칩만 사용합니다. 확률은 학습을 돕기 위한 추정치예요. 실제 돈을 사용하지 않아요.</div>
 </aside>
 <main class="main">
+<div class="practice-banner hidden" id="practiceBanner"><div><b>AI 연습 게임 · 기초 코스 5단계</b><span id="practiceGuideText">내 차례에 원하는 행동을 한 번 선택해 보세요.</span></div><button id="returnLesson" type="button" disabled>학습 이어가기</button></div>
   
 <section class="welcome-bar">
   <div class="growth-card"><h2>나의 포커 성장</h2><div class="growth-main"><div><div class="growth-level" id="growthLevel">레벨 1</div><div class="small" id="growthSubtitle">기초부터 시작해보세요.</div></div><div class="small" id="growthXp">0 / 100 XP</div></div><div class="xp-track"><div class="xp-fill" id="growthXpBar"></div></div><div class="skill-mini" id="skillMini"></div></div>
@@ -70,9 +110,9 @@
 <section class="adaptive-panel" id="adaptiveLearning">
   <div class="adaptive-head">
     <div>
-      <div class="adaptive-kicker">Personal learning path</div>
+      <div class="adaptive-kicker">나에게 맞춘 학습</div>
       <div class="adaptive-title">오늘의 맞춤 학습</div>
-      <div class="adaptive-meta" id="adaptiveSummary">레벨 테스트 결과에 맞춰 다음 문제를 선택합니다.</div>
+      <div class="adaptive-meta" id="adaptiveSummary">학습 기록을 바탕으로 연습 문제를 골라요.</div>
     </div>
     <div class="adaptive-statrow">
       <div class="adaptive-stat" id="adaptiveMastery">숙련도 기록 준비 중</div>
@@ -80,7 +120,7 @@
     </div>
   </div>
   <div class="adaptive-question" id="adaptiveQuestion">레벨 테스트를 완료하면 첫 학습 문제가 표시됩니다.</div>
-  <div class="adaptive-options" id="adaptiveOptions"></div>
+  <div class="adaptive-options" id="adaptiveOptions"></div><div class="adaptive-help"><button id="adaptiveHint" type="button">힌트 보기</button><button id="adaptiveConcept" type="button">개념 다시 보기</button></div><div class="adaptive-note hidden" id="adaptiveHelpText" aria-live="polite"></div>
   <div class="adaptive-feedback hidden" id="adaptiveFeedback" aria-live="polite"></div>
   <div class="adaptive-actions">
     <span class="small" id="adaptiveProgress">문제 은행에서 현재 실력에 맞는 문제를 선택합니다.</span>
@@ -88,16 +128,16 @@
   </div>
 </section>
 
-  <div class="topbar"><div><h1>6-Max AI 테이블</h1><div class="session-meta"><span id="sessionNo">Session #1</span><span id="sessionHands">0 hands</span></div></div><div class="pills"><span class="pill" id="handNo">Hand #1</span><span class="pill" id="streetPill">Preflop</span><span class="pill" id="potPill">Pot 30</span><span class="pill stack-pill" id="heroStack">YOU 1,000</span></div></div>
+  <div class="topbar"><div><h1>AI 5명과 연습하기</h1><div class="session-meta"><span id="sessionNo">세션 #1</span><span id="sessionHands">0판 진행</span></div></div><div class="pills"><span class="pill" id="handNo">판 #1</span><span class="pill" id="streetPill">프리플랍</span><span class="pill" id="potPill">팟 30</span><span class="pill stack-pill" id="heroStack">내 칩 1,000</span></div></div>
   <section class="table-wrap"><div class="table" id="table"><div class="table-mark">POKER DUO</div><div class="pot"><div class="label">POT</div><strong id="pot">30</strong></div><div class="coach-npc compact" id="coachNpc"><div class="coach-avatar">C</div><div class="coach-bubble"><b id="coachNpcTitle">COACH</b><span id="coachNpcText">상황을 관찰하고 있습니다.</span></div></div><div class="board" id="board"></div><div id="players"></div></div></section>
-  <section class="session-bar"><div><b>세션 스택</b><span id="sessionStatus">모든 플레이어의 가상칩이 핸드 사이에 유지됩니다.</span></div><button id="newSession" class="secondary">새 세션</button></section>
+  <section class="session-bar"><div><b>현재 세션의 칩</b><span id="sessionStatus">모든 플레이어의 가상칩이 핸드 사이에 유지됩니다.</span></div><button id="newSession" class="secondary">새 세션</button></section>
   <section class="controls">
     <div class="actions"><button id="fold" class="fold">폴드</button><button id="check" class="check">체크</button><button id="call" class="call">콜</button><button id="raiseFast" class="raisebtn">레이즈</button><button id="allIn" class="allin">올인</button></div>
-    <div class="raisebox"><span class="raise-label" id="raiseLabel">Raise to 40</span><input id="raiseRange" class="range" type="range" min="40" max="1000" value="40" step="10"><button id="raiseGo" class="raisebtn">실행</button></div>
+    <div class="raisebox"><span class="raise-label" id="raiseLabel">레이즈 40</span><input id="raiseRange" class="range" type="range" min="40" max="1000" value="40" step="10"><button id="raiseGo" class="raisebtn">실행</button></div>
   </section>
   <div class="panels">
-    <section class="panel"><h2>실시간 코치</h2><div class="coach-grid"><div class="box"><b id="coachTitle">결정 대기</b><span id="coachText">내 차례가 되면 현재 상황을 분석합니다.</span></div><div class="box"><b>상황 정보</b><span id="situation" class="situation">-</span></div></div><div class="footer-note">현재 코칭은 랜덤 핸드 가정으로 계산한 간이 equity와 pot odds를 비교합니다.</div></section>
-    <section class="panel"><h2>이번 핸드 결과</h2><div id="result" class="result hidden"></div><div id="nextHandStatus" class="small hidden">다음 핸드를 자동으로 시작합니다.</div><button id="newHand" class="secondary hidden">다음 핸드</button></section>
+    <section class="panel"><h2>실시간 코치</h2><div class="coach-grid"><div class="box"><b id="coachTitle">결정 대기</b><span id="coachText">내 차례가 되면 현재 상황을 분석합니다.</span></div><div class="box"><b>상황 정보</b><span id="situation" class="situation">-</span></div></div><div class="footer-note">현재 코치는 여러 가능한 카드를 가정해 계산한 학습용 추정치를 사용해요. 실제 승률을 보장하지는 않아요.</div></section>
+    <section class="panel"><h2>이번 판 결과</h2><div id="result" class="result hidden"></div><div id="nextHandStatus" class="small hidden">다음 핸드를 자동으로 시작합니다.</div><button id="newHand" class="secondary hidden">다음 핸드</button></section>
   </div>
   <section class="panel"><h2>학습 포인트</h2><div class="lesson"><div><b>1. 포지션</b><span class="small">버튼과 블라인드 이후의 행동 순서를 확인하세요.</span></div><div><b>2. 팟 오즈</b><span class="small">콜 비용 ÷ (현재 팟 + 콜 비용)으로 단순 계산합니다.</span></div><div><b>3. 베팅</b><span class="small">레이즈는 최소 레이즈 규칙을 지켜야 하며, 올인도 별도로 처리합니다.</span></div></div></section>
   <section class="panel"><h2>세션 최종 리포트</h2><div id="sessionReport" class="session-report hidden"></div></section>
@@ -174,22 +214,40 @@ function recordDecision(h){const c=classifyDecision(h);for(const [k,v] of [['pos
 function resetLearning(){if(confirm('누적 학습 기록을 초기화할까요?')){learning=structuredClone(defaultLearning);saveLearning();renderLearning()}}
 const PROFILE_KEY='poker_duo_profile_v1';
 const TEST_QUESTIONS=[
- {q:'프리플랍에서 BTN의 A♠Q♠를 들고 모두 폴드해 왔다. 기본적으로 가장 자연스러운 선택은?',opts:['폴드','레이즈','무조건 올인'],a:1,skill:'position'},
- {q:'플랍에서 A-K-7 레인보드에 A-Q를 가지고 있다. 현재 핸드에 대한 설명으로 가장 적절한 것은?',opts:['탑페어로 상당히 강한 핸드','항상 최약 핸드','이미 스트레이트'],a:0,skill:'handStrength'},
- {q:'플랍에 같은 무늬 카드가 세 장 모였다면 가장 먼저 확인할 것은?',opts:['플러시 가능성','버튼 위치만','내 칩을 전부 넣을지'],a:0,skill:'board'},
- {q:'상대가 이전 핸드에서 자주 큰 베팅을 했다. 이번에도 큰 베팅을 했다면?',opts:['이전 행동과 현재 보드를 함께 고려한다','항상 강한 패라고 단정한다','항상 블러프라고 단정한다'],a:0,skill:'opponent'},
- {q:'팟이 100이고 콜 비용이 25라면 단순 팟 오즈는?',opts:['10%','20%','25%'],a:1,skill:'aggression'}
+ {q:'당신은 버튼(BTN) 자리에 있고, A♠ Q♠를 받았어요. 앞사람들이 모두 폴드했다면 어떤 행동을 먼저 고려할까요?',opts:['내 카드도 포기하기','먼저 레이즈해서 참가하기','칩을 모두 거는 것만 가능하기'],a:1,skill:'position'},
+ {q:'공용 카드가 A♣ K♦ 7♠이고, 내 카드가 A♥ Q♣예요. 지금 어떤 족보를 만들었나요?',opts:['스트레이트','플러시','에이스 원페어'],a:2,skill:'handStrength'},
+ {q:'플랍에 하트(♥) 카드가 세 장 나왔어요. 상대의 어떤 가능성을 살펴봐야 할까요?',opts:['같은 무늬 5장으로 만드는 플러시','반드시 풀하우스를 갖고 있음','상대는 항상 약한 패임'],a:0,skill:'board'},
+ {q:'큰 베팅을 자주 하던 상대가 이번에도 많은 칩을 걸었어요. 무엇을 확인하면 좋을까요?',opts:['무조건 강한 패라고 확신하기','이전 행동과 이번 공용 카드를 함께 보기','무조건 속임수라고 생각하기'],a:1,skill:'opponent'},
+ {q:'현재 팟에 100칩이 있고, 콜하려면 25칩이 필요해요. 콜한 뒤 전체 팟 125칩에서 내 콜 비용이 차지하는 비율은?',opts:['25%','10%','20%'],a:2,skill:'aggression'}
 ];
 function defaultProfile(){return {tested:false,level:1,xp:0,knowledge:0,skills:{position:0,handStrength:0,board:0,opponent:0,aggression:0},testAnswers:[]}}
 function loadProfile(){try{const raw=JSON.parse(localStorage.getItem(PROFILE_KEY)||'null');return Object.assign(defaultProfile(),raw||{}, {skills:Object.assign(defaultProfile().skills,raw&&raw.skills||{})})}catch(e){return defaultProfile()}}
 function saveProfile(){try{localStorage.setItem(PROFILE_KEY,JSON.stringify(profile))}catch(e){}}
 const $=id=>document.getElementById(id);
 let profile=loadProfile();
-function showOnboarding(){
-  const form=$('levelTest');
-  form.innerHTML=TEST_QUESTIONS.map((x,i)=>'<div class="test-q"><b>'+(i+1)+'. '+x.q+'</b><div class="test-options">'+x.opts.map((o,j)=>'<button type="button" class="test-option" data-q="'+i+'" data-a="'+j+'">'+o+'</button>').join('')+'</div></div>').join('');
-  form.querySelectorAll('.test-option').forEach(btn=>btn.onclick=()=>{const q=+btn.dataset.q;form.querySelectorAll('[data-q="'+q+'"]').forEach(x=>x.classList.remove('selected'));btn.classList.add('selected');profile.testAnswers[q]=+btn.dataset.a;const done=profile.testAnswers.filter(x=>x!==undefined).length;$('testProgress').style.width=(done/TEST_QUESTIONS.length*100)+'%';$('testHint').textContent=done===TEST_QUESTIONS.length?'테스트를 완료하고 실전 진단으로 넘어가세요.':(TEST_QUESTIONS.length-done)+'개 문제 남음';});
+function chooseOnboardingView(view){
+  ['pathChooser','placementView','beginnerView'].forEach(id=>$(id).classList.toggle('hidden',id!==view));
   $('onboarding').classList.remove('hidden');
+}
+function showOnboarding(){
+  const form=$('testQuestionList');
+  form.innerHTML=TEST_QUESTIONS.map((x,i)=>'<div class="test-q"><b>'+(i+1)+'. '+x.q+'</b><div class="test-options">'+x.opts.map((o,j)=>'<button type="button" class="test-option" data-q="'+i+'" data-a="'+j+'">'+o+'</button>').join('')+'</div></div>').join('');
+  form.querySelectorAll('.test-option').forEach(btn=>btn.onclick=()=>{
+    const q=+btn.dataset.q;
+    form.querySelectorAll('[data-q="'+q+'"]').forEach(x=>x.classList.remove('selected'));
+    btn.classList.add('selected');
+    profile.testAnswers[q]=+btn.dataset.a;saveProfile();
+    const done=profile.testAnswers.filter(x=>x!==undefined).length;
+    $('testProgress').style.width=(done/TEST_QUESTIONS.length*100)+'%';
+    $('testHint').textContent=done===TEST_QUESTIONS.length?'준비됐어요! 테스트를 완료하고 AI 연습을 시작해요.':(TEST_QUESTIONS.length-done)+'문제 남았어요.';
+  });
+  // Stored answers can be resumed after a refresh.
+  profile.testAnswers.forEach((a,i)=>{const b=form.querySelector('[data-q="'+i+'"][data-a="'+a+'"]');if(b)b.classList.add('selected')});
+  const answered=profile.testAnswers.filter(x=>x!==undefined).length;
+  $('testProgress').style.width=(answered/TEST_QUESTIONS.length*100)+'%';
+  $('testHint').textContent=answered===TEST_QUESTIONS.length?'준비됐어요! 테스트를 완료하고 AI 연습을 시작해요.':(TEST_QUESTIONS.length-answered)+'문제 남았어요.';
+  if(beginnerState.mode==='beginner'&&!beginnerState.finished){chooseOnboardingView('beginnerView');renderBeginner()}
+  else chooseOnboardingView('pathChooser');
 }
 function submitLevelTest(e){
   if(e)e.preventDefault();
@@ -197,7 +255,7 @@ function submitLevelTest(e){
   if(answered!==TEST_QUESTIONS.length){$('testHint').textContent='모든 문제에 답해주세요.';return false}
   let correct=0;const skills=defaultProfile().skills;
   TEST_QUESTIONS.forEach((q,i)=>{if(profile.testAnswers[i]===q.a){correct++;skills[q.skill]++}});
-  profile.tested=true;profile.knowledge=correct;profile.level=Math.max(1,Math.min(5,1+Math.floor(correct/2)));profile.xp=correct*12;profile.skills=skills;xp=profile.xp;
+  profile.tested=true;profile.path='placement';profile.knowledge=correct;profile.level=Math.max(1,Math.min(5,1+Math.floor(correct/2)));profile.xp=correct*12;profile.skills=skills;xp=profile.xp;
   Object.keys(SKILL_LABELS).forEach(k=>{adaptive.mastery[k]=skills[k]?55:30});
   saveAdaptive();renderAdaptive(true);saveProfile();
   $('onboarding').classList.add('hidden');
@@ -211,7 +269,7 @@ function bindLevelTest(){
   form.onsubmit=submitLevelTest;
 }
 bindLevelTest();
-document.querySelectorAll('.nav button').forEach((btn,i)=>btn.addEventListener('click',()=>{
+document.querySelectorAll('.nav button:not(#openBeginner)').forEach((btn,i)=>btn.addEventListener('click',()=>{
  document.querySelectorAll('.nav button').forEach(x=>x.classList.remove('active'));btn.classList.add('active');
  const target=i===0?$('table'):i===1?$('adaptiveLearning'):$('learningReport');
  if(target)target.scrollIntoView({behavior:'smooth',block:'start'});
@@ -223,7 +281,7 @@ function saveSession(){try{localStorage.setItem(SESSION_KEY,JSON.stringify(sessi
 function nextStackSeat(from){for(let k=1;k<=6;k++){const i=(from+k)%6;if(session.stacks[i]>0)return i}return null}
 function startFreshSession(){clearTimeout(aiTimer);session=defaultSession();saveSession();handNo=1;heroHistory=[];const report=$('sessionReport');report.classList.add('hidden');report.innerHTML='';startNextHand(true)}
 session=loadSession();handNo=session.handNo||1;
-function money(n){return Math.round(n).toLocaleString('ko-KR')}function label(c){return c.r+c.s}function isRed(c){return c.s==='♥'||c.s==='♦'}
+function money(n){return Math.round(n).toLocaleString('ko-KR')}function label(c){return (c.r==='T'?'10':c.r)+c.s}function isRed(c){return c.s==='♥'||c.s==='♦'}
 function levelInfo(){const level=Math.floor(xp/100)+1;const within=xp%100;const names=['시작','프리플랍','포지션','팟 오즈','밸류 베팅','리버 판단'];return {level,title:names[Math.min(level-1,names.length-1)]||'실전 사고',within}}
 function updateLevel(){const li=levelInfo();$('levelTitle').textContent='레벨 '+li.level+' · '+li.title;$('xpText').textContent=li.within+' / 100 XP';$('xpBar').style.width=li.within+'%'}
 function pushLog(text){game.log.push(text);renderLog()}
@@ -279,7 +337,7 @@ function currentCoach(){
   $('coachNpcTitle').textContent=title;$('coachNpcText').textContent=text;
   $('coachTitle').className=cls;$('coachTitle').textContent=title;$('coachText').textContent=text;
   const ep=Math.round(estimateEquity(game,0,90)*100),op=call?Math.round(call/(pot+call)*100):0;
-  $('situation').textContent='스트리트: '+game.street.toUpperCase()+' · 포지션: '+position+' · 보드: '+(game.board.length?game.board.map(label).join(' '):'없음')+' · 팟 '+money(pot)+(call?' · 콜 '+money(call):'')+' · equity 약 '+ep+'%'+(call?' · 팟 오즈 '+op+'%':'');
+  $('situation').textContent='진행 단계: '+({preflop:'프리플랍',flop:'플랍',turn:'턴',river:'리버'}[game.street]||game.street)+' · 포지션: '+position+' · 보드: '+(game.board.length?game.board.map(label).join(' '):'없음')+' · 팟 '+money(pot)+(call?' · 콜 '+money(call):'')+' · 예상 승률 약 '+ep+'%'+(call?' · 필요한 승률 약 '+op+'%':'');
 }
 
 function availableCards(game,heroId){const used=new Set();for(const p of game.players)for(const c of p.cards)if(c&&p.id!==heroId)used.add(c.r+c.s);for(const c of game.board)used.add(c.r+c.s);return game.deck.filter(c=>!used.has(c.r+c.s))}
@@ -290,19 +348,19 @@ function chooseAI(p){const call=toCall(game,p.id),pot=contributionTotal(game),a=
   if(call===0){const open=eq>0.29+foldBias||eq>0.22+raiseBias&&Math.random()<.35;if(open&&(a.bet||a.raise)){const target=Math.min(a.maxRaiseTo,Math.max(a.minRaiseTo,game.street==='preflop'?Math.round(game.bigBlind*2.5):Math.max(a.minRaiseTo,Math.round(pot*.55))));const opening=game.currentBet===0;return {type:(target===a.maxRaiseTo&&target<a.minimumRaw)?'allin':(opening?'bet':'raise'),amount:target}}return {type:'check'} }
   const odds=call/(pot+call);if(eq<odds-0.10+foldBias&&style!=='sticky')return {type:'fold'};if(eq>odds+0.16+raiseBias&&a.raise&&a.maxRaiseTo>=a.minRaiseTo&&Math.random()<(style==='aggressive'?.42:style==='tricky'?.25:.18)){const target=Math.min(a.maxRaiseTo,Math.max(a.minRaiseTo,Math.round(Math.max(a.minRaiseTo,pot*.65))));return {type:target===a.maxRaiseTo&&a.maxRaiseTo<a.minimumRaw?'allin':'raise',amount:target}};return {type:'call'}
 }
-function renderActions(){const h=game.players[0],a=legalActions(game,0),can=canAct(game,0),range=$('raiseRange'),raw=a.minimumRaw,canAggress=a.bet||a.raise; $('allIn').disabled=!can||!a.allIn;$('fold').disabled=!can;$('check').disabled=!can||!a.check;$('call').disabled=!can||!a.call;$('raiseFast').disabled=!can||!canAggress;$('raiseGo').disabled=!can||!canAggress;$('raiseFast').textContent=game.currentBet===0?'베팅':'레이즈';$('call').textContent=a.call?'콜 '+money(a.toCall):'콜';if(canAggress){const max=a.maxRaiseTo;const min=Math.min(a.minRaiseTo,max);range.min=min;range.max=max;range.step=max-min<100?1:10;if(+range.value<min||+range.value>max)range.value=min;const shortAllin=max<raw;range.disabled=!can;range.title=shortAllin?'최소 베팅/레이즈보다 작은 숏 올인만 가능합니다.':'베팅 금액';$('raiseLabel').textContent=shortAllin?'올인 '+money(max):(game.currentBet===0?'Bet to ':'Raise to ')+money(+range.value)}else{range.disabled=true;$('raiseLabel').textContent='베팅 불가'} }
-function render(){ $('sessionNo').textContent='Session #'+session.id;$('sessionHands').textContent=session.handsPlayed+' hands';$('heroStack').textContent='YOU '+money(game.players[0].stack);$('sessionStatus').textContent=session.status==='complete'?'세션 종료 · 최종 리포트를 확인하세요.':'세션 스택은 핸드 종료 후 다음 핸드로 이어집니다.';renderPlayers();renderBoard();$('pot').textContent=money(contributionTotal(game));$('potPill').textContent='Pot '+money(contributionTotal(game));$('streetPill').textContent=game.street.charAt(0).toUpperCase()+game.street.slice(1);$('handNo').textContent='Hand #'+handNo;renderActions();renderLog();currentCoach();updateLevel();$('newHand').disabled=true;$('newSession').disabled=false}
+function renderActions(){const h=game.players[0],a=legalActions(game,0),can=canAct(game,0),range=$('raiseRange'),raw=a.minimumRaw,canAggress=a.bet||a.raise; $('allIn').disabled=!can||!a.allIn;$('fold').disabled=!can;$('check').disabled=!can||!a.check;$('call').disabled=!can||!a.call;$('raiseFast').disabled=!can||!canAggress;$('raiseGo').disabled=!can||!canAggress;$('raiseFast').textContent=game.currentBet===0?'베팅':'레이즈';$('call').textContent=a.call?'콜 '+money(a.toCall):'콜';if(canAggress){const max=a.maxRaiseTo;const min=Math.min(a.minRaiseTo,max);range.min=min;range.max=max;range.step=max-min<100?1:10;if(+range.value<min||+range.value>max)range.value=min;const shortAllin=max<raw;range.disabled=!can;range.title=shortAllin?'최소 베팅/레이즈보다 작은 숏 올인만 가능합니다.':'베팅 금액';$('raiseLabel').textContent=shortAllin?'올인 '+money(max):(game.currentBet===0?'베팅 ':'레이즈 ')+money(+range.value)}else{range.disabled=true;$('raiseLabel').textContent='베팅 불가'} }
+function render(){ $('sessionNo').textContent='세션 #'+session.id;$('sessionHands').textContent=session.handsPlayed+'판 진행';$('heroStack').textContent='내 칩 '+money(game.players[0].stack);$('sessionStatus').textContent=session.status==='complete'?'세션 종료 · 최종 리포트를 확인하세요.':'세션 스택은 판이 끝나도 다음 판으로 이어져요.';renderPlayers();renderBoard();$('pot').textContent=money(contributionTotal(game));$('potPill').textContent='팟 '+money(contributionTotal(game));$('streetPill').textContent=({preflop:'프리플랍',flop:'플랍',turn:'턴',river:'리버'}[game.street]||game.street);$('handNo').textContent='판 #'+handNo;renderActions();renderLog();currentCoach();updateLevel();$('newHand').disabled=true;$('newSession').disabled=false}
 function metricPercent(g,t){return t?Math.round(g/t*100):0}
 function recordSessionDecision(h){const c=classifyDecision(h);for(const [k,v] of [['position',c.positionGood],['handStrength',c.strengthGood],['board',c.boardGood],['opponent',c.oppGood],['aggression',c.aggressionGood]]){session.metrics[k].total++;if(v)session.metrics[k].good++}session.decisionRecords.push({street:h.street,action:h.action,amount:h.amount});recordDecision(h)}
 function buildSessionReport(){const r=$('sessionReport');const rows=[['포지션 판단','position'],['핸드 강도 판단','handStrength'],['보드 판단','board'],['상대 성향 판단','opponent'],['베팅/공격성 판단','aggression']];const html=rows.map(([label,key])=>{const m=session.metrics[key],pct=metricPercent(m.good,m.total);return '<div class="report-metric"><b>'+label+'</b><strong>'+pct+'%</strong><div class="bar-track"><div class="bar-fill" style="width:'+pct+'%"></div></div><div class="small">관찰 '+m.total+'회</div></div>'}).join('');const weak=rows.map(([label,key])=>({label,key,pct:metricPercent(session.metrics[key].good,session.metrics[key].total)})).filter(x=>session.metrics[x.key].total>0).sort((a,b)=>a.pct-b.pct).slice(0,3);const tips=weak.map((x,i)=>'<div class="improve"><b>'+ (i+1)+'. '+x.label+'</b><br>이번 세션에서 상대적으로 반복해서 복기할 필요가 있었던 영역입니다. 다음 세션에서는 '+(x.key==='position'?'행동 순서와 버튼/블라인드 위치를 먼저 확인하세요.':x.key==='handStrength'?'내 핸드가 현재 보드에서 얼마나 강한지와 상대 범위를 함께 생각하세요.':x.key==='board'?'보드의 드로우·연결성·고위 카드 변화가 액션에 어떤 영향을 주는지 확인하세요.':x.key==='opponent'?'상대의 이전 베팅 빈도와 스타일을 한 번 더 확인하세요.':'베팅 크기와 공격성을 팟 크기·스택과 함께 판단하세요.')+'</div>').join('');r.innerHTML='<div class="report-summary"><b>세션 '+session.id+' 종료</b><br>'+session.handsPlayed+'핸드 동안의 의사결정 패턴을 요약했습니다. 이 화면은 점수나 등급이 아니라 다음 학습에서 다시 볼 영역을 찾기 위한 기록입니다.</div><div class="report-grid">'+html+'</div><div><b>다음 세션에서 볼 개선점</b></div>'+ (tips||'<div class="small">충분한 의사결정 데이터가 없어 아직 패턴을 만들기 어렵습니다.</div>');r.classList.remove('hidden')}
 function finishSession(reason){clearTimeout(handTransitionTimer);session.status='complete';session.endReason=reason;syncLearningFromSession();saveSession();$('nextHandStatus').classList.add('hidden');buildSessionReport();$('newHand').disabled=true}
-function endResult(){if(!game.finished)return;clearTimeout(aiTimer);const result=$('result');result.classList.remove('hidden');let html='';if(game.result.type==='fold'){const w=game.players[game.winnerIds[0]];html='<b>'+escapeHtml(w.name)+' 폴드 승리</b><br>팟 '+money(game.result.pot)+' 획득.'}else{html='<b>쇼다운</b><br>'+game.pots.map((p,idx)=>'Pot '+(idx+1)+': '+p.winnerIds.map(id=>escapeHtml(game.players[id].name)).join(', ')+' · '+money(p.amount)+' · '+p.handName).join('<br>')}session.stacks=game.players.map(p=>p.stack);session.handsPlayed++;for(const h of heroHistory)recordSessionDecision(h);const eliminatedNow=[];for(let i=1;i<6;i++){if(session.stacks[i]<=0&&!session.eliminations.some(e=>e.id===i)){session.eliminations.push({id:i,name:names[i],hand:handNo});eliminatedNow.push(names[i])}}saveSession();const heroBusted=session.stacks[0]<=0;const npcEliminated=session.eliminations.length;let score=10;const last=heroHistory[heroHistory.length-1];if(last){const c=classifyDecision(last);score+=Object.values(c).filter(Boolean).length*3}xp+=score;learning.hands++;saveLearning();html+='<br><span class="small">이번 핸드 기록이 저장되었습니다. 즉시 정답 평가는 하지 않고 세션 종료 시 패턴으로 분석합니다.</span>';if(eliminatedNow.length)html+='<br><b>탈락:</b> '+eliminatedNow.join(', ');result.innerHTML=html;renderLearning();const reason=heroBusted?'YOU 탈락':npcEliminated>=2?'NPC 2명 탈락':null;if(reason)finishSession(reason);render();if(!reason&&session.status!=='complete'){clearTimeout(handTransitionTimer);$('nextHandStatus').textContent='다음 핸드를 자동으로 시작합니다.';$('nextHandStatus').classList.remove('hidden');handTransitionTimer=setTimeout(()=>{ $('nextHandStatus').classList.add('hidden'); startNextHand(false); },1800)}}
+function endResult(){if(!game.finished)return;clearTimeout(aiTimer);const result=$('result');result.classList.remove('hidden');let html='';if(game.result.type==='fold'){const w=game.players[game.winnerIds[0]];html='<b>'+escapeHtml(w.name)+' 폴드 승리</b><br>팟 '+money(game.result.pot)+' 획득.'}else{html='<b>쇼다운</b><br>'+game.pots.map((p,idx)=>'Pot '+(idx+1)+': '+p.winnerIds.map(id=>escapeHtml(game.players[id].name)).join(', ')+' · '+money(p.amount)+' · '+p.handName).join('<br>')}session.stacks=game.players.map(p=>p.stack);session.handsPlayed++;for(const h of heroHistory)recordSessionDecision(h);const eliminatedNow=[];for(let i=1;i<6;i++){if(session.stacks[i]<=0&&!session.eliminations.some(e=>e.id===i)){session.eliminations.push({id:i,name:names[i],hand:handNo});eliminatedNow.push(names[i])}}saveSession();const heroBusted=session.stacks[0]<=0;const npcEliminated=session.eliminations.length;let score=10;const last=heroHistory[heroHistory.length-1];if(last){const c=classifyDecision(last);score+=Object.values(c).filter(Boolean).length*3}xp+=score;learning.hands++;saveLearning();html+='<br><span class="small">이번 판의 기록을 저장했어요. 전체 플레이가 끝나면 선택한 행동들을 함께 돌아볼 수 있어요.</span>';if(eliminatedNow.length)html+='<br><b>탈락:</b> '+eliminatedNow.join(', ');result.innerHTML=html;renderLearning();const reason=heroBusted?'YOU 탈락':npcEliminated>=2?'NPC 2명 탈락':null;if(reason)finishSession(reason);render();if(!reason&&session.status!=='complete'){clearTimeout(handTransitionTimer);$('nextHandStatus').textContent='다음 핸드를 자동으로 시작합니다.';$('nextHandStatus').classList.remove('hidden');handTransitionTimer=setTimeout(()=>{ $('nextHandStatus').classList.add('hidden'); startNextHand(false); },1800)}}
 
-function startNextHand(force=false){clearTimeout(aiTimer);clearTimeout(handTransitionTimer);if(session.status==='complete'){buildSessionReport();render();return}if(!force&&session.stacks[0]<=0){finishSession('YOU 탈락');render();return}if(!force&&session.eliminations.length>=2){finishSession('NPC 2명 탈락');render();return}const live=session.stacks.filter(v=>v>0).length;if(!force&&live<2){finishSession('남은 플레이어 부족');render();return}const nextButton=session.handsPlayed===0?session.button:nextStackSeat(session.button);if(nextButton===null){finishSession('진행 가능한 플레이어 없음');render();return}session.button=nextButton;session.handNo=(session.handNo||0)+1;handNo=session.handNo;game=createGame({stacks:session.stacks});game.log.push('Hand #'+handNo+' 시작 · 버튼 '+game.players[game.button].name+' · SB '+game.players[game.sb].name+' · BB '+game.players[game.big].name);heroHistory=[];$('result').classList.add('hidden');$('result').innerHTML='';render();scheduleAI()}
+function startNextHand(force=false){clearTimeout(aiTimer);clearTimeout(handTransitionTimer);if(session.status==='complete'){buildSessionReport();render();return}if(!force&&session.stacks[0]<=0){finishSession('YOU 탈락');render();return}if(!force&&session.eliminations.length>=2){finishSession('NPC 2명 탈락');render();return}const live=session.stacks.filter(v=>v>0).length;if(!force&&live<2){finishSession('남은 플레이어 부족');render();return}const nextButton=session.handsPlayed===0?session.button:nextStackSeat(session.button);if(nextButton===null){finishSession('진행 가능한 플레이어 없음');render();return}session.button=nextButton;session.handNo=(session.handNo||0)+1;handNo=session.handNo;game=createGame({stacks:session.stacks});game.log.push('판 #'+handNo+' 시작 · 버튼 '+game.players[game.button].name+' · SB '+game.players[game.sb].name+' · BB '+game.players[game.big].name);heroHistory=[];$('result').classList.add('hidden');$('result').innerHTML='';render();scheduleAI()}
 function startNewHand(){startNextHand(false)}
 function scheduleAI(){clearTimeout(aiTimer);if(game.finished||game.turn===0)return;aiTimer=setTimeout(()=>{try{const p=game.players[game.turn],d=chooseAI(p);applyAction(game,p.id,d.type,d.amount);if(game.finished){render();endResult();return}render();scheduleAI()}catch(err){game.log.push('AI 오류: '+err.message);render()}},520)}
-function userAction(type,amount){if(!canAct(game,0))return;const pot=contributionTotal(game),call=toCall(game,0),equity=estimateEquity(game,0,110),potOdds=call?call/(pot+call):0;const h={street:game.street,action:type,amount:amount||0,equity,potOdds,position:positionOf(0),boardRisk:game.board.length>=3?(game.board.some(c=>['A','K','Q'].includes(c.r))?'high':'low'):'low',opponentPressure:call/(pot+call||1)};heroHistory.push(h);try{applyAction(game,0,type,amount);render();if(game.finished)endResult();else scheduleAI()}catch(err){heroHistory.pop();game.log.push('액션 거부: '+err.message);render()}}
-$('fold').onclick=()=>userAction('fold');$('check').onclick=()=>userAction('check');$('call').onclick=()=>userAction('call');$('allIn').onclick=()=>userAction('allin');$('raiseGo').onclick=()=>{const a=legalActions(game,0);if(a.bet||a.raise){const v=Number($('raiseRange').value);const shortAllin=v===a.maxRaiseTo&&v<a.minimumRaw;userAction(shortAllin?'allin':(game.currentBet===0?'bet':'raise'),v)}};$('raiseFast').onclick=()=>{const a=legalActions(game,0);if(a.bet||a.raise){const v=a.maxRaiseTo<a.minimumRaw?a.maxRaiseTo:a.minRaiseTo;const shortAllin=v===a.maxRaiseTo&&v<a.minimumRaw;userAction(shortAllin?'allin':(game.currentBet===0?'bet':'raise'),v)}};$('raiseRange').oninput=()=>{const a=legalActions(game,0);$('raiseLabel').textContent=(game.currentBet===0?'Bet to ':'Raise to ')+money(Number($('raiseRange').value))};$('newHand').onclick=startNewHand;$('newSession').onclick=startFreshSession;
+function userAction(type,amount){if(!canAct(game,0))return;const pot=contributionTotal(game),call=toCall(game,0),equity=estimateEquity(game,0,110),potOdds=call?call/(pot+call):0;const h={street:game.street,action:type,amount:amount||0,equity,potOdds,position:positionOf(0),boardRisk:game.board.length>=3?(game.board.some(c=>['A','K','Q'].includes(c.r))?'high':'low'):'low',opponentPressure:call/(pot+call||1)};heroHistory.push(h);try{applyAction(game,0,type,amount);onBeginnerPracticeAction();render();if(game.finished)endResult();else scheduleAI()}catch(err){heroHistory.pop();game.log.push('액션 거부: '+err.message);render()}}
+$('fold').onclick=()=>userAction('fold');$('check').onclick=()=>userAction('check');$('call').onclick=()=>userAction('call');$('allIn').onclick=()=>userAction('allin');$('raiseGo').onclick=()=>{const a=legalActions(game,0);if(a.bet||a.raise){const v=Number($('raiseRange').value);const shortAllin=v===a.maxRaiseTo&&v<a.minimumRaw;userAction(shortAllin?'allin':(game.currentBet===0?'bet':'raise'),v)}};$('raiseFast').onclick=()=>{const a=legalActions(game,0);if(a.bet||a.raise){const v=a.maxRaiseTo<a.minimumRaw?a.maxRaiseTo:a.minRaiseTo;const shortAllin=v===a.maxRaiseTo&&v<a.minimumRaw;userAction(shortAllin?'allin':(game.currentBet===0?'bet':'raise'),v)}};$('raiseRange').oninput=()=>{const a=legalActions(game,0);$('raiseLabel').textContent=(game.currentBet===0?'베팅 ':'레이즈 ')+money(Number($('raiseRange').value))};$('newHand').onclick=startNewHand;$('newSession').onclick=startFreshSession;
 
 function runSelfCheck(){
   const checks=[];
@@ -331,21 +389,22 @@ const ADAPT_KEY='poker_duo_adaptive_v1';
 const SKILL_LABELS={position:'포지션',handStrength:'핸드 선택',board:'보드 분석',opponent:'상대 행동 해석',aggression:'베팅 판단'};
 const EXERCISES=[
  {id:'pos1',skill:'position',difficulty:1,q:'텍사스 홀덤에서 버튼(BTN)의 가장 큰 장점은 무엇인가요?',opts:['대부분의 포스트플랍 라운드에서 마지막으로 행동한다','항상 가장 먼저 행동한다','항상 좋은 시작 패를 받는다'],a:0,why:'버튼은 플랍 이후 마지막으로 행동하는 경우가 많아 상대의 행동을 본 뒤 판단할 수 있습니다.'},
- {id:'pos2',skill:'position',difficulty:2,q:'다른 조건이 비슷하다면 포지션이 좋을 때 얻는 이점은?',opts:['상대 행동 정보를 더 많이 보고 결정한다','핸드 강도를 계산할 필요가 없다','모든 베팅에 콜해야 한다'],a:0,why:'늦은 포지션은 앞선 플레이어들의 행동 정보를 더 많이 제공하지만, 승리를 보장하지는 않습니다.'},
+ {id:'pos2',skill:'position',difficulty:2,q:'카드나 칩 상황이 비슷하다면, 늦게 행동할 때 어떤 점이 유리할까요?',opts:['상대 행동 정보를 더 많이 보고 결정한다','핸드 강도를 계산할 필요가 없다','모든 베팅에 콜해야 한다'],a:0,why:'늦은 포지션은 앞선 플레이어들의 행동 정보를 더 많이 제공하지만, 승리를 보장하지는 않습니다.'},
  {id:'pos3',skill:'position',difficulty:3,q:'앞자리에서 여러 명이 이미 레이즈와 콜을 했다. 뒤에서 행동할 때 우선 고려할 것은?',opts:['앞선 행동이 나타내는 범위와 내 포지션','내 카드 무늬만','무조건 올인'],a:0,why:'앞선 레이즈와 콜은 상대 범위에 대한 정보를 줍니다. 내 패, 포지션, 스택과 함께 평가하세요.'},
- {id:'hand1',skill:'handStrength',difficulty:1,q:'보드가 A♣ 8♦ 3♠이고 내 패가 A♥ Q♣라면 현재 핸드는?',opts:['탑페어, 퀸 키커','이미 스트레이트','플러시'],a:0,why:'내 A와 보드의 A로 탑페어를 만들었고, Q가 키커입니다. 강한 편이지만 상대 범위와 베팅을 함께 봐야 합니다.'},
- {id:'hand2',skill:'handStrength',difficulty:2,q:'내 패가 K♠ K♦이고 보드에 A♣ 9♥ 4♠가 나왔다. 가장 정확한 설명은?',opts:['오버페어지만 에이스가 있는 상대에게 뒤질 수 있다','무조건 최강 핸드다','이미 풀하우스다'],a:0,why:'포켓 킹은 보드의 9와 4보다 높은 오버페어지만, 상대가 에이스를 가졌다면 앞서 있을 수 있습니다.'},
+ {id:'hand1',skill:'handStrength',difficulty:1,q:'보드가 A♣ 8♦ 3♠이고 내 패가 A♥ Q♣라면 현재 패는?',opts:['탑페어, 퀸 키커','이미 스트레이트','플러시'],a:0,why:'내 A와 보드의 A로 탑페어를 만들었고, Q가 키커입니다. 강한 편이지만 상대 범위와 베팅을 함께 봐야 합니다.'},
+ {id:'hand2',skill:'handStrength',difficulty:2,q:'내 패가 K♠ K♦이고 보드에 A♣ 9♥ 4♠가 나왔다. 가장 정확한 설명은?',opts:['에이스 원페어가 있는 상대에게 뒤질 수 있다','보드의 모든 카드보다 높은 오버페어다','이미 풀하우스다'],a:0,why:'포켓 킹은 높은 포켓페어지만, 보드에 에이스가 있으므로 오버페어가 아닙니다. 상대가 에이스를 가지고 있다면 원페어 싸움에서 뒤질 수 있어요.'},
  {id:'hand3',skill:'handStrength',difficulty:3,q:'탑페어를 갖고 있지만 상대가 여러 라운드에서 큰 베팅을 이어간다. 무엇이 가장 적절한가?',opts:['탑페어라는 이유만으로 무조건 콜하지 말고 상대 범위와 베팅 크기를 재평가한다','탑페어는 언제나 이긴다','상대 행동은 판단에 필요 없다'],a:0,why:'탑페어도 절대적인 강함은 아닙니다. 보드, 상대 성향, 베팅 크기와 팟 오즈를 함께 고려해야 합니다.'},
  {id:'board1',skill:'board',difficulty:1,q:'플랍에 같은 무늬 카드가 세 장 나왔다. 무엇을 먼저 확인해야 하나요?',opts:['플러시 가능성과 내 패가 그 보드에 얼마나 잘 맞는지','버튼의 색깔','무조건 팟에 올인할지'],a:0,why:'같은 무늬 세 장은 플러시가 이미 완성될 수 있는 보드입니다. 상대의 가능한 패와 내 패의 무늬를 확인하세요.'},
  {id:'board2',skill:'board',difficulty:2,q:'플랍은 9♠ 8♠ 4♦이다. 어떤 위험을 살펴야 하나요?',opts:['스페이드 플러시 드로우와 7·T 등 스트레이트 드로우','보드에 위험이 전혀 없다','상대가 반드시 에이스를 가졌다'],a:0,why:'연결된 숫자와 같은 무늬가 있어 여러 드로우가 가능한 보드입니다. 특정 핸드를 단정하지 말고 가능한 범위를 살펴보세요.'},
  {id:'board3',skill:'board',difficulty:3,q:'턴 카드로 보드에 세 번째 하트가 나왔다. 내가 탑페어를 갖고 있다면?',opts:['상대의 플러시 가능성과 이전 액션을 다시 평가한다','턴은 핸드 강도에 영향을 주지 않는다','항상 크게 베팅한다'],a:0,why:'턴 카드는 가능한 완성 패와 상대 범위를 바꿀 수 있습니다. 내 핸드가 여전히 가치 베팅이나 콜을 감당하는지 재평가하세요.'},
  {id:'opp1',skill:'opponent',difficulty:1,q:'상대가 이전에 큰 베팅을 자주 했다. 이번 큰 베팅은 반드시 강한 패라는 뜻인가요?',opts:['아니다. 이전 경향은 참고하되 현재 보드와 액션도 봐야 한다','그렇다. 언제나 강한 패다','항상 블러프다'],a:0,why:'성향은 확률적 단서일 뿐 확정적인 증거가 아닙니다. 현재 상황과 함께 판단하세요.'},
  {id:'opp2',skill:'opponent',difficulty:2,q:'평소 수동적인 상대가 여러 사람이 있는 팟에서 갑자기 큰 레이즈를 했다. 어떻게 해석하나요?',opts:['강한 범위일 가능성을 고려하되 정보가 제한적임을 기억한다','무조건 블러프라고 본다','상대 성향을 무시한다'],a:0,why:'수동적인 상대의 큰 레이즈는 강한 범위를 시사할 수 있지만, 몇 번의 관찰만으로 확신하지는 마세요.'},
- {id:'opp3',skill:'opponent',difficulty:3,q:'상대의 행동 패턴을 판단할 때 가장 신뢰할 만한 접근은?',opts:['여러 핸드의 기록을 보고 상황별 경향을 비교한다','한 번의 쇼다운으로 성향을 확정한다','닉네임만 보고 판단한다'],a:0,why:'충분한 관찰과 상황별 기록이 필요합니다. 표본이 적을 때는 판단의 확신도를 낮게 유지하세요.'},
- {id:'aggr1',skill:'aggression',difficulty:1,q:'팟이 100칩이고 콜 비용이 25칩이다. 단순 팟 오즈(콜 비용 ÷ 콜 후 팟)는?',opts:['약 20%','약 25%','약 50%'],a:0,why:'현재 팟 100칩에 콜 25칩을 더하면 125칩이 되므로 25/125는 20%입니다. 실제 판단에서는 팟에 이미 포함된 베팅과 콜 비용을 정확히 확인하세요.'},
+ {id:'opp3',skill:'opponent',difficulty:3,q:'상대의 행동 패턴을 판단할 때 어떤 방법이 가장 도움이 될까요?',opts:['여러 핸드의 기록을 보고 상황별 경향을 비교한다','한 번의 쇼다운으로 성향을 확정한다','닉네임만 보고 판단한다'],a:0,why:'충분한 관찰과 상황별 기록이 필요합니다. 표본이 적을 때는 판단의 확신도를 낮게 유지하세요.'},
+ {id:'aggr1',skill:'aggression',difficulty:1,q:'팟이 100칩이고 콜 비용이 25칩이다. 콜 비용이 콜 후 전체 팟에서 차지하는 비율은?',opts:['약 20%','약 25%','약 50%'],a:0,why:'현재 팟 100칩에 콜 25칩을 더하면 125칩이 되므로 25/125는 20%입니다. 실제 판단에서는 팟에 이미 포함된 베팅과 콜 비용을 정확히 확인하세요.'},
  {id:'aggr2',skill:'aggression',difficulty:2,q:'내 핸드가 강하지만 보드에 여러 드로우가 있다. 베팅을 결정할 때 무엇을 함께 고려해야 하나요?',opts:['상대가 콜할 더 약한 패, 드로우, 베팅 크기','내 카드 두 장만','항상 최소 베팅만'],a:0,why:'밸류와 보호의 목적, 상대 범위, 보드의 위험도, 베팅 크기를 함께 검토하세요.'},
- {id:'aggr3',skill:'aggression',difficulty:3,q:'상대가 큰 베팅을 했고 내 핸드는 중간 정도다. 가장 좋은 사고 과정은?',opts:['필요한 승률(팟 오즈), 상대 범위, 이전 액션을 함께 평가한다','칩이 이미 들어갔으니 무조건 콜한다','큰 베팅에는 항상 폴드한다'],a:0,why:'이미 넣은 칩은 되돌릴 수 없으므로 현재 콜 비용과 팟, 상대 범위로 판단해야 합니다. 큰 베팅이라고 항상 콜 또는 폴드하는 것은 아닙니다.'}
+ {id:'aggr3',skill:'aggression',difficulty:3,q:'상대가 큰 베팅을 했고 내 핸드는 중간 정도다. 판단할 때 어떤 정보를 함께 살펴봐야 할까요?',opts:['필요한 승률(팟 오즈), 상대 범위, 이전 액션을 함께 평가한다','칩이 이미 들어갔으니 무조건 콜한다','큰 베팅에는 항상 폴드한다'],a:0,why:'이미 넣은 칩은 되돌릴 수 없으므로 현재 콜 비용과 팟, 상대 범위로 판단해야 합니다. 큰 베팅이라고 항상 콜 또는 폴드하는 것은 아닙니다.'}
 ];
+const ADAPT_HELP={"pos1":["누가 먼저 행동하는지 떠올려 보세요.","버튼(BTN)은 딜러 표시가 있는 자리예요. 플랍 이후에는 대체로 다른 사람들의 행동을 본 뒤 결정할 수 있어요."],"pos2":["상대가 먼저 행동하면 어떤 정보를 얻을 수 있을까요?","포지션은 차례를 뜻해요. 나중에 행동할수록 앞서 나온 행동을 참고하기 쉬워요."],"pos3":["먼저 칩을 올린 사람이 어떤 카드를 가졌을지 생각해 보세요.","레이즈는 베팅 금액을 높이는 행동이에요. 레인지는 상대가 가질 수 있는 카드 조합의 범위예요."],"hand1":["에이스 두 장을 찾을 수 있나요?","원페어는 숫자가 같은 카드 두 장이고, 탑페어는 공용 카드 중 가장 높은 숫자로 만든 원페어예요. 키커는 승부를 가릴 때 도움을 주는 나머지 카드예요."],"hand2":["보드의 에이스는 킹보다 숫자가 높아요.","오버페어는 손에 든 두 장의 같은 숫자 카드가 공용 카드의 가장 높은 카드보다 클 때를 말해요."],"hand3":["내 족보만으로 상대의 패를 알 수 있을까요?","탑페어도 보드와 상대 패에 따라 질 수 있어요. 상대의 베팅 크기와 이전 행동을 함께 살펴봐요."],"board1":["같은 무늬 카드가 모이면 어떤 족보가 가능한가요?","플러시는 같은 무늬 카드 다섯 장으로 이루어져요. 플랍에 같은 무늬가 세 장 나오면 두 장을 가진 사람은 이미 플러시일 수 있어요."],"board2":["같은 무늬 카드 두 장과 이어지는 숫자에 주목하세요.","드로우는 카드를 더 받으면 특정 족보를 만들 가능성이 있는 상태예요. 플러시 드로우와 스트레이트 드로우가 있어요."],"board3":["턴 카드 한 장으로 완성될 수 있는 족보를 찾아보세요.","턴은 네 번째 공용 카드예요. 같은 무늬 카드가 늘어나면 플러시 완성 가능성이 바뀔 수 있어요."],"opp1":["이전 기록은 이번 판 결과를 확정해 줄까요?","상대 성향은 여러 판의 행동으로 추정하는 경향이에요. 한 번의 베팅만으로 패를 확정할 수 없어요."],"opp2":["평소 행동과 다른 베팅에 어떤 의미가 있을지 생각해 보세요.","수동적인 상대는 주로 체크나 콜을 선택하는 경향이 있어요. 하지만 예외도 존재해요."],"opp3":["한 번 관찰한 내용과 여러 번 관찰한 내용을 비교해 보세요.","행동 패턴을 파악할 때는 충분한 관찰과 상황별 기록이 중요해요."],"aggr1":["콜을 하면 팟이 25칩만큼 커져요.","팟 오즈는 콜 비용 ÷ (지금 팟 + 콜 비용)으로 계산해요. 예: 25 ÷ 125 = 20%."],"aggr2":["상대가 어떤 패로 베팅에 응할지 상상해 보세요.","밸류 베팅은 더 약한 패의 콜을 기대하는 베팅이고, 드로우는 아직 완성되지 않은 족보의 가능성이에요."],"aggr3":["지금부터 필요한 칩을 기준으로 생각해 보세요.","이미 팟에 들어간 칩은 되돌릴 수 없어요. 새로운 결정을 할 때는 현재 필요한 칩과 상대의 가능한 패를 고려해요."]};
 function defaultAdaptive(){const mastery={};Object.keys(SKILL_LABELS).forEach(k=>mastery[k]=35);return {mastery,attempts:{},lastSeen:{},dueAt:{},correct:0,answered:0,currentId:null,answeredCurrent:false,completedIds:[],history:[]}}
 function loadAdaptive(){try{const raw=JSON.parse(localStorage.getItem(ADAPT_KEY)||'null');const d=defaultAdaptive();if(!raw)return d;return {...d,...raw,mastery:{...d.mastery,...raw.mastery},attempts:{...d.attempts},lastSeen:{...d.lastSeen},dueAt:{...d.dueAt},completedIds:Array.isArray(raw.completedIds)?raw.completedIds:[],history:Array.isArray(raw.history)?raw.history:[]}}catch(e){return defaultAdaptive()}}
 let adaptive=loadAdaptive();
@@ -380,6 +439,7 @@ function renderAdaptive(forceNew=false){
  $('adaptiveOptions').innerHTML=q.opts.map((opt,i)=>'<button type="button" class="adaptive-option" data-choice="'+i+'">'+String.fromCharCode(65+i)+'. '+opt+'</button>').join('');
  $('adaptiveFeedback').classList.add('hidden');$('adaptiveFeedback').textContent='';$('adaptiveFeedback').classList.remove('bad');
  $('adaptiveNext').disabled=true;adaptive.answeredCurrent=false;
+ $('adaptiveHelpText').classList.add('hidden');$('adaptiveHelpText').textContent='';
  $('adaptiveMastery').textContent='전체 정답 '+adaptive.correct+'/'+adaptive.answered;
  const due=Object.keys(SKILL_LABELS).filter(k=>(adaptive.dueAt[k]||0)<=Date.now()&&(adaptive.dueAt[k]||0)>0).length;
  $('adaptiveDue').textContent='복습 '+due+'개';
@@ -400,14 +460,167 @@ function answerAdaptive(choice){
  if(adaptive.history.length>100)adaptive.history=adaptive.history.slice(-100);
  $('adaptiveOptions').querySelectorAll('button').forEach((btn,i)=>{btn.disabled=true;if(i===q.a)btn.classList.add('correct');if(i===choice&&!ok)btn.classList.add('wrong')});
  const fb=$('adaptiveFeedback');fb.classList.remove('hidden');fb.classList.toggle('bad',!ok);
- fb.innerHTML='<b>'+(ok?'정답입니다. +10 XP':'이번에는 오답입니다. 복습 일정에 반영했습니다.')+'</b><div>'+q.why+'</div><div class="small" style="margin-top:5px">'+SKILL_LABELS[q.skill]+' 숙련도: '+before+' → '+adaptive.mastery[q.skill]+'</div>';
+ fb.innerHTML='<b>'+(ok?'좋아요! 정답이에요. +10 XP':'이 개념을 한 번 더 살펴봐요. 복습할 수 있도록 기록했어요.')+'</b><div>'+q.why+'</div><div class="small" style="margin-top:5px">'+SKILL_LABELS[q.skill]+' 숙련도: '+before+' → '+adaptive.mastery[q.skill]+'</div>';
  $('adaptiveNext').disabled=false;
  saveAdaptive();saveProfile();updateGrowth();
 }
 function nextAdaptive(){renderAdaptive(true)}
+function showAdaptiveHelp(kind){
+ const q=EXERCISES.find(x=>x.id===adaptive.currentId);if(!q)return;
+ const el=$('adaptiveHelpText');el.classList.remove('hidden');el.textContent=(kind===0?'힌트: ':'개념 정리: ')+(ADAPT_HELP[q.id]||[])[kind];
+ if(kind===0){adaptive.hints=(adaptive.hints||0)+1;saveAdaptive()}
+}
 function bindAdaptive(){
  $('adaptiveNext').onclick=nextAdaptive;
+ $('adaptiveHint').onclick=()=>showAdaptiveHelp(0);
+ $('adaptiveConcept').onclick=()=>showAdaptiveHelp(1);
  renderAdaptive();
+}
+
+
+/* ---------- V15: beginner course, optional placement test, contextual hints ---------- */
+const BEGINNER_KEY='poker_duo_beginner_v1';
+const BEGINNER_LESSONS=[
+ {title:'포커에서 쓰는 기본 용어',sub:'폴드 · 체크 · 콜 · 베팅 · 레이즈',body:'포커에서는 차례가 오면 여러 행동 중 하나를 골라요.\n\n폴드: 이번 판에서 포기하기\n체크: 추가 칩 없이 차례 넘기기 (맞춰야 할 베팅이 없을 때)\n콜: 상대의 베팅에 맞춰 필요한 칩 내기\n베팅: 먼저 칩을 걸기\n레이즈: 이미 걸린 베팅을 더 높이기',q:'상대가 10칩을 베팅했어요. 그 금액에 맞춰 칩을 내고 게임을 계속하는 행동은 무엇일까요?',opts:['폴드','콜','레이즈'],a:1,hint:'상대가 낸 금액과 똑같이 맞추는 행동을 찾아보세요.',concept:'콜(Call)은 상대의 베팅에 맞춰 필요한 칩을 내는 행동이에요. 체크는 맞춰야 할 베팅이 없을 때만 할 수 있어요.',why:'콜은 상대가 베팅한 금액에 맞춰 필요한 칩을 내는 행동이에요.'},
+ {title:'카드와 족보 알아보기',sub:'원페어 · 투페어 · 스트레이트 · 플러시',body:'텍사스 홀덤에서는 내 카드 2장과 공용 카드 5장 중에서 가장 좋은 카드 5장을 골라 족보를 만들어요.\n\n원페어: 같은 숫자 2장\n투페어: 서로 다른 숫자의 페어 2쌍\n스트레이트: 숫자가 연속되는 카드 5장\n플러시: 같은 무늬 카드 5장\n풀하우스: 같은 숫자 3장과 다른 같은 숫자 2장',q:'내 카드가 A♠ 8♦이고, 공용 카드가 A♥ 6♣ 3♠라면 현재 어떤 족보일까요?',opts:['스트레이트','원페어','플러시'],a:1,hint:'내 카드와 공용 카드에서 숫자가 같은 두 장을 찾아보세요.',concept:'원페어는 숫자가 같은 카드 두 장이에요. A♠와 A♥처럼 무늬가 달라도 숫자가 같으면 한 쌍이에요.',why:'A♠와 A♥가 한 쌍을 이루므로 에이스 원페어예요.'},
+ {title:'한 판이 진행되는 순서',sub:'프리플랍 → 플랍 → 턴 → 리버 → 쇼다운',body:'게임은 여러 단계로 나뉘어요.\n\n프리플랍: 각자 카드 2장을 받고 시작해요.\n플랍: 공용 카드 3장이 공개돼요.\n턴: 공용 카드 1장이 추가돼요.\n리버: 마지막 공용 카드 1장이 추가돼요.\n쇼다운: 남아 있는 플레이어들이 패를 비교해 승부를 정해요.',q:'플랍에서 공용 카드 3장이 공개된 다음에는 무엇이 나올까요?',opts:['턴 카드 1장','공용 카드 5장이 한꺼번에 추가','바로 새 게임 시작'],a:0,hint:'공용 카드의 공개 순서는 3장, 1장, 1장이에요.',concept:'플랍에서는 3장, 턴에서는 1장, 리버에서는 1장의 공용 카드가 공개돼요.',why:'플랍 다음은 턴이에요. 공용 카드가 한 장 더 공개돼요.'},
+ {title:'내 차례에 할 수 있는 행동',sub:'상황에 따라 사용 가능한 버튼이 달라져요',body:'상대가 아직 베팅하지 않았다면 체크하거나 먼저 베팅할 수 있어요.\n\n상대가 베팅했다면 폴드하거나, 콜하거나, 규칙에 따라 레이즈할 수 있어요.\n\n올인은 남은 칩을 모두 거는 선택이에요. 연습 게임에서는 실제 돈이 아닌 가상 칩을 사용해요.',q:'상대가 이미 베팅했어요. 게임을 포기하지 않고 필요한 금액만큼 맞추려면?',opts:['체크','콜','폴드'],a:1,hint:'추가 칩을 내지 않는 체크는 상대 베팅이 있을 때 일반적으로 선택할 수 없어요.',concept:'상대 베팅이 있는 상황에서는 필요한 칩을 내는 콜과 금액을 올리는 레이즈 등을 선택할 수 있어요. 폴드는 이번 판을 포기하는 행동이에요.',why:'상대가 베팅한 금액에 맞춰 필요한 칩을 내는 행동은 콜이에요.'}
+];
+const BEGINNER_REVIEW=[
+ {q:'상대가 베팅하지 않았고, 나는 칩을 추가로 내고 싶지 않아요. 어떤 행동을 고려할 수 있나요?',opts:['체크','콜','레이즈만 가능'],a:0,hint:'먼저 베팅이 없을 때 할 수 있는 행동을 떠올려 보세요.',concept:'체크는 맞춰야 할 베팅이 없을 때 추가 칩을 내지 않고 다음 차례로 넘기는 행동이에요.',why:'상대의 베팅을 맞춰야 하지 않을 때는 체크할 수 있어요.'},
+ {q:'내 카드가 K♣ K♥이고 보드가 A♠ 8♦ 4♣라면, 에이스를 가진 상대에게는 어떤 상황일까요?',opts:['반드시 이겨요','상대의 에이스 원페어에 뒤질 수 있어요','이미 플러시예요'],a:1,hint:'한 쌍을 비교할 때 에이스와 킹 중 어느 쪽이 높은 숫자인가요?',concept:'원페어끼리는 페어의 숫자가 높은 쪽이 이겨요. 에이스는 킹보다 높은 숫자예요.',why:'킹 원페어는 에이스 원페어보다 낮아요. 포켓 킹이 언제나 이기는 것은 아니에요.'},
+ {q:'공용 카드가 플랍에서 3장 공개된 다음, 한 장씩 공개되는 단계의 이름은?',opts:['쇼다운과 프리플랍','버튼과 블라인드','턴과 리버'],a:2,hint:'플랍 뒤에 나오는 두 단계의 이름을 떠올려 보세요.',concept:'공용 카드는 플랍 3장, 턴 1장, 리버 1장 순서로 공개돼요.',why:'플랍 다음 단계는 턴, 그다음은 리버예요.'}
+];
+function defaultBeginner(){return {mode:null,step:0,completed:{},practiceDone:false,finished:false,reviewIndex:0,reviewAnswers:[],hintUsed:{}}}
+function loadBeginner(){try{return {...defaultBeginner(),...(JSON.parse(localStorage.getItem(BEGINNER_KEY)||'null')||{})}}catch(e){return defaultBeginner()}}
+let beginnerState=loadBeginner();
+function saveBeginner(){try{localStorage.setItem(BEGINNER_KEY,JSON.stringify(beginnerState))}catch(e){}}
+function beginBeginner(reset=false){
+ if(reset)beginnerState=defaultBeginner();
+ beginnerState.mode='beginner';beginnerState.finished=false;saveBeginner();
+ chooseOnboardingView('beginnerView');renderBeginner();
+}
+function beginPlacement(){beginnerState.mode='placement';saveBeginner();showOnboarding();chooseOnboardingView('placementView')}
+function returnToChoices(){beginnerState.mode=null;saveBeginner();chooseOnboardingView('pathChooser')}
+function beginnerHelp(kind){
+ const step=beginnerState.step;
+ const data=step<4?BEGINNER_LESSONS[step]:(step===5?BEGINNER_REVIEW[beginnerState.reviewIndex]:null);
+ if(!data)return;
+ const el=$('beginnerHelp');el.classList.remove('hidden');el.textContent=(kind==='hint'?'힌트: ':'개념 정리: ')+(kind==='hint'?data.hint:data.concept);
+ if(kind==='hint'){beginnerState.hintUsed[step+'-'+beginnerState.reviewIndex]=true;saveBeginner()}
+}
+function feedbackBeginner(ok,why){
+ $('beginnerFeedback').classList.remove('hidden');$('beginnerFeedback').classList.toggle('retry',!ok);
+ $('beginnerFeedback').textContent=ok?'좋아요! '+why: '이 개념을 한 번 더 살펴볼까요? '+why;
+}
+function answerBeginner(i){
+ const step=beginnerState.step;
+ const review=step===5;
+ const q=review?BEGINNER_REVIEW[beginnerState.reviewIndex]:BEGINNER_LESSONS[step];
+ if(!q||beginnerState.completed[''+step]&&!review)return;
+ const ok=i===q.a;
+ document.querySelectorAll('#beginnerAnswers button').forEach((b,j)=>{b.classList.toggle('selected',j===i&&ok);b.classList.toggle('incorrect',j===i&&!ok)});
+ feedbackBeginner(ok,ok?q.why: '힌트나 개념 설명을 확인하고 다시 선택할 수 있어요.');
+ if(!ok){$('beginnerContinue').disabled=true;return}
+ if(!review){
+   if(!beginnerState.completed[''+step]){xp+=10;profile.xp=xp;saveProfile()}
+   beginnerState.completed[''+step]=true;
+ }else{beginnerState.reviewAnswers[beginnerState.reviewIndex]=true}
+ saveBeginner();updateGrowth();
+ $('beginnerContinue').disabled=false;
+ $('beginnerContinue').textContent=review?(beginnerState.reviewIndex===2?'기초 학습 완료':'다음 확인 문제'):(step===3?'AI 연습 게임으로':'다음 단계');
+ document.querySelectorAll('#beginnerAnswers button').forEach(b=>b.disabled=true);
+}
+function renderPracticeBanner(){
+ const active=beginnerState.mode==='beginner'&&beginnerState.step===4&&!beginnerState.finished;
+ $('practiceBanner').classList.toggle('hidden',!active||!$('onboarding').classList.contains('hidden'));
+ $('practiceGuideText').textContent=beginnerState.practiceDone?'선택을 완료했어요. 학습 코스로 돌아갈 수 있어요.':'내 차례에 폴드, 체크, 콜, 베팅 중 가능한 행동을 하나 선택해 보세요.';
+ $('returnLesson').disabled=!beginnerState.practiceDone;
+}
+function renderBeginner(){
+ const s=beginnerState.step;
+ $('beginnerProgress').innerHTML=Array.from({length:6},(_,i)=>'<span class="'+(i<s?'done':i===s?'current':'')+'"></span>').join('');
+ $('beginnerHelp').classList.add('hidden');$('beginnerFeedback').classList.add('hidden');
+ $('beginnerContinue').disabled=true;
+ $('beginnerTools').classList.toggle('hidden',s===4||s>=6);
+ $('beginnerQuestionBlock').classList.toggle('hidden',s===4||s>=6);
+ $('beginnerLabel').textContent='6단계 중 '+Math.min(s+1,6)+'단계';
+ $('beginnerStatus').textContent='힌트를 사용해도 불이익은 없어요.';
+ const btn=$('beginnerContinue');
+ if(s<4){
+   const data=BEGINNER_LESSONS[s];$('beginnerTitle').textContent=data.title;$('beginnerSubtitle').textContent=data.sub;
+   $('beginnerBody').textContent=data.body.replace(/\\n/g,'\n');$('beginnerQuestion').textContent=data.q;
+   $('beginnerAnswers').innerHTML=data.opts.map((o,i)=>'<button class="guide-answer" type="button" data-answer="'+i+'">'+o+'</button>').join('');
+   btn.textContent='다음 단계';
+   if(beginnerState.completed[''+s]){btn.disabled=false;btn.textContent=s===3?'AI 연습 게임으로':'다음 단계'}
+ }else if(s===4){
+   $('beginnerTitle').textContent='AI와 첫 연습 게임';$('beginnerSubtitle').textContent='가상 칩으로 연습하면서 실제 버튼을 눌러 보세요.';
+   $('beginnerBody').textContent='지금까지 배운 용어를 직접 사용해 볼 차례예요. AI 5명과 함께 게임이 진행돼요. 내 차례에 가능한 행동을 한 번 선택하면 이 학습 단계가 완료돼요.\n\n처음에는 결과보다 버튼의 의미와 차례를 익히는 데 집중해요.';
+   btn.textContent='연습 테이블 열기';btn.disabled=false;
+ }else if(s===5){
+   const idx=Math.min(beginnerState.reviewIndex,2),q=BEGINNER_REVIEW[idx];
+   $('beginnerTitle').textContent='기초 학습 확인하기';$('beginnerSubtitle').textContent='지금까지 배운 내용을 세 문제로 정리해요.';
+   $('beginnerBody').textContent='확인 문제 '+(idx+1)+'/3 · 힌트와 개념 설명을 언제든 다시 볼 수 있어요.';
+   $('beginnerQuestion').textContent=q.q;
+   $('beginnerAnswers').innerHTML=q.opts.map((o,i)=>'<button class="guide-answer" type="button" data-answer="'+i+'">'+o+'</button>').join('');
+   btn.textContent=idx===2?'기초 학습 완료':'다음 확인 문제';
+ }else{
+   $('beginnerTitle').textContent='기초 코스를 마쳤어요!';$('beginnerSubtitle').textContent='포커 용어와 게임 진행 과정을 익혔어요.';
+   $('beginnerBody').textContent='앞으로는 AI 상대와 가상 칩으로 연습하고, 맞춤 문제를 풀면서 실력을 키울 수 있어요.';
+   btn.textContent='학습 화면으로 이동';btn.disabled=false;
+ }
+ $('beginnerAnswers').querySelectorAll('button').forEach(b=>b.onclick=()=>answerBeginner(+b.dataset.answer));
+ saveBeginner();renderPracticeBanner();
+}
+function finishBeginner(){
+ beginnerState.finished=true;beginnerState.mode=null;beginnerState.step=6;saveBeginner();
+ profile.tested=true;profile.path='beginner';profile.knowledge=3;profile.level=Math.max(1,profile.level||1);profile.xp=xp;
+ saveProfile();
+ $('onboarding').classList.add('hidden');
+ updateGrowth();renderAdaptive(true);renderPracticeBanner();
+ if(!game||!session||session.status==='complete')startFreshSession();
+}
+function advanceBeginner(){
+ const s=beginnerState.step;
+ if(s===4){
+   $('onboarding').classList.add('hidden');
+   if(!game||!session||session.status==='complete')startFreshSession();
+   renderPracticeBanner();
+   return;
+ }
+ if(s===5){
+   if(!beginnerState.reviewAnswers[beginnerState.reviewIndex])return;
+   if(beginnerState.reviewIndex<2){beginnerState.reviewIndex++;saveBeginner();renderBeginner();return}
+   beginnerState.step=6;saveBeginner();renderBeginner();return;
+ }
+ if(s>=6){finishBeginner();return}
+ if(!beginnerState.completed[''+s])return;
+ beginnerState.step++;saveBeginner();renderBeginner();
+}
+function onBeginnerPracticeAction(){
+ if(beginnerState.mode==='beginner'&&beginnerState.step===4){
+   beginnerState.practiceDone=true;beginnerState.completed['4']=true;saveBeginner();renderPracticeBanner();
+ }
+}
+function bindOnboardingPaths(){
+ $('startBeginner').onclick=()=>beginBeginner(false);
+ $('startPlacement').onclick=beginPlacement;
+ $('backToChoices').onclick=returnToChoices;
+ $('beginnerChoose').onclick=returnToChoices;
+ $('beginnerHint').onclick=()=>beginnerHelp('hint');
+ $('beginnerConcept').onclick=()=>beginnerHelp('concept');
+ $('beginnerContinue').onclick=advanceBeginner;
+ $('returnLesson').onclick=()=>{
+   if(!beginnerState.practiceDone)return;
+   beginnerState.step=5;beginnerState.reviewIndex=0;beginnerState.reviewAnswers=[];saveBeginner();
+   chooseOnboardingView('beginnerView');renderBeginner();renderPracticeBanner();
+ };
+ $('openBeginner').onclick=()=>beginBeginner(true);
+ $('toggleTestGlossary').onclick=()=>{
+  const show=$('testGlossary').classList.toggle('hidden');
+  $('toggleTestGlossary').textContent=show?'용어 설명 보기 ▾':'용어 설명 닫기 ▴';
+  $('toggleTestGlossary').setAttribute('aria-expanded',String(!show));
+ };
 }
 
 function bootApp(){
@@ -416,6 +629,7 @@ function bootApp(){
     xp=profile.xp||0;
     updateGrowth();
     bindAdaptive();
+    bindOnboardingPaths();
     if(TEST_MODE){
       clearTimeout(aiTimer);
       game=createGame({stacks:session.stacks});
